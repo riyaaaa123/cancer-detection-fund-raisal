@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import User
+from rest_framework import serializers
+from .models import Hospital
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,3 +17,11 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
         
+           
+
+# serializers.py
+
+class HospitalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hospital
+        fields = ['id', 'user', 'name', 'phone_number', 'pdf']

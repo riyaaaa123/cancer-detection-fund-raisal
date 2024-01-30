@@ -1,13 +1,14 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import requests
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from joblib import dump
 # Load data
-df = pd.read_csv("/home/riya/Downloads/pythonProject6/backend/model/data.csv")
+df = pd.read_csv("/home/atharva/Desktop/jugadu-trio-2.0/backend/model/data.csv")
 # Drop NaN values and convert 'diagnosis' to categorical
 df = df.dropna(axis=1)
 df['diagnosis'] = df['diagnosis'].astype('category')
@@ -84,3 +85,9 @@ if st.button("Predict"):
     #
     # # Display the prediction result
     st.success(f"Prediction: {prediction}")
+    payload = {'prediction': prediction}
+    response = requests.post('http://localhost:8000/model/api/save_prediction/', json=payload)
+    if response.status_code == 200:
+        st.success("Prediction result saved in the Django database.")
+    else:
+        st.error("Failed to save prediction result in the Django database. Please check the server logs.")

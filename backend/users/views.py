@@ -7,6 +7,13 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import login
 from django.contrib.auth import logout
 
+from django.views import View
+from django.shortcuts import render, redirect
+from rest_framework import status
+from rest_framework import viewsets
+from .models import Hospital
+from .serializers import HospitalSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class Register(APIView):
@@ -110,3 +117,10 @@ class Logout(APIView):
             return Response({'message': 'Logout successful'})
         except Exception as e:
             return Response({'error': 'Logout failed'})
+            print(e)    
+
+            
+class HospitalViewSet(viewsets.ModelViewSet):
+    queryset = Hospital.objects.all()
+    serializer_class = HospitalSerializer
+    permission_classes = [IsAuthenticated]
