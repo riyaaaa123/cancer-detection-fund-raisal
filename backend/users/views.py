@@ -3,6 +3,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from .emails import *
+from django.views import View
+from django.shortcuts import render, redirect
+from rest_framework import status
+from rest_framework import viewsets
+from .models import Hospital
+from .serializers import HospitalSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 class Register(APIView):
     def post(self,request):
@@ -62,4 +70,10 @@ class VerifyOTP(APIView):
         
             
         except Exception as e:
-            print(e)           
+            print(e)    
+
+            
+class HospitalViewSet(viewsets.ModelViewSet):
+    queryset = Hospital.objects.all()
+    serializer_class = HospitalSerializer
+    permission_classes = [IsAuthenticated]
