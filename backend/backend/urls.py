@@ -24,5 +24,6 @@ urlpatterns = [
     path('user/', include('users.urls')),
     path('model/', include('model_run.urls')),
     path('api/', include('users.urls')),
+    path('query/', include('query.urls')),
 ]
 # ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
