@@ -3,6 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from .emails import *
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import login
+from django.contrib.auth import logout
+
 from django.views import View
 from django.shortcuts import render, redirect
 from rest_framework import status
@@ -34,7 +38,43 @@ class Register(APIView):
         })
       except Exception as e:
         print(e)
-        
+
+class Login(APIView):
+    def post(self, request):
+        try:
+            serializer = LoginSerializer(data=request.data)
+
+            if serializer.is_valid():
+                email = serializer.validated_data['email']
+                password = serializer.validated_data['password']
+
+                user = User.objects.filter(email=email).first()
+
+                if user is not None and user.check_password(password):
+                    login(request, user)
+                    return Response({
+                        'status': 200,
+                        'message': 'Login successful',
+                        'data': {'user_id': user.id, 'email': user.email},
+                    })
+                else:
+                    return Response({
+                        'status': 401,
+                        'message': 'Invalid email or password',
+                    })
+
+            return Response({
+                'status': 400,
+                'message': 'Invalid input data',
+                'data': serializer.errors,
+            })
+
+        except Exception as e:
+            print(f"Exception during login: {e}")
+            return Response({
+                'status': 500,
+                'message': 'Internal server error',
+            })         
 class VerifyOTP(APIView):
     def post(self, request):
         try:
@@ -53,7 +93,7 @@ class VerifyOTP(APIView):
                  
                 if user[0].otp !=otp:
                   return Response({
-                  'status':400,
+                  'status':401,
                   'message': 'wrong otp',
                   'data': 'enter the correct otp',
             
@@ -61,15 +101,22 @@ class VerifyOTP(APIView):
                 user = user.first()
                 user.is_verified = True
                 user.save()
+                login(request,user)
                 return Response({
                   'status':200,
                   'message': 'correct otp',
                   'data': 'registered successfully',
-            
                  })
-        
-            
         except Exception as e:
+            print(e)           
+
+class Logout(APIView):
+    def post(self, request):
+        try:
+            logout(request)
+            return Response({'message': 'Logout successful'})
+        except Exception as e:
+            return Response({'error': 'Logout failed'})
             print(e)    
 
             

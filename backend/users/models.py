@@ -11,6 +11,7 @@ from .manager import UserManager
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
+    password = models.CharField(max_length=16)
     is_verified = models.BooleanField(default=False)
     otp  = models.CharField(max_length=6,null= True, blank=True)
     last_login_time= models.DateTimeField(null = True, blank = True)
