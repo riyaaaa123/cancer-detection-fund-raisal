@@ -10,5 +10,5 @@ router.register(r'hospitals', HospitalViewSet)
 urlpatterns = [
     path('register/', Register.as_view()),
     path('verify/',VerifyOTP.as_view()),
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]
