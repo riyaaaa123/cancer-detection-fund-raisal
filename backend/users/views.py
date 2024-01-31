@@ -123,4 +123,3 @@ class Logout(APIView):
 class HospitalViewSet(viewsets.ModelViewSet):
     queryset = Hospital.objects.all()
     serializer_class = HospitalSerializer
-    permission_classes = [IsAuthenticated]
