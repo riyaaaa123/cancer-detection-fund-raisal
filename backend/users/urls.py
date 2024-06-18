@@ -2,10 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import *
 from rest_framework import routers
-from .views import HospitalViewSet
 
 router = routers.DefaultRouter()
-router.register(r'hospitals', HospitalViewSet)
 
 urlpatterns = [
     path('register/', Register.as_view()),
@@ -13,4 +11,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('login/', Login.as_view()),
     path('logout/', Logout.as_view()),
+    path('register-hospital/', RegisterHospital.as_view()),
 ]

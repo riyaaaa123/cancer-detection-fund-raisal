@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Hospital
 from rest_framework import serializers
-from .models import Hospital
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,4 +23,4 @@ class LoginSerializer(serializers.Serializer):
 class HospitalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hospital
-        fields = ['id', 'user', 'name', 'phone_number', 'pdf']
+        fields = ['user', 'name', 'phone_number', 'certificate']

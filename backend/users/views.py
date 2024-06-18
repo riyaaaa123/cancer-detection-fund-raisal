@@ -120,6 +120,34 @@ class Logout(APIView):
             print(e)    
 
             
-class HospitalViewSet(viewsets.ModelViewSet):
-    queryset = Hospital.objects.all()
-    serializer_class = HospitalSerializer
+# class HospitalViewSet(viewsets.ModelViewSet):
+#     queryset = Hospital.objects.all()
+#     serializer_class = HospitalSerializer
+
+class RegisterHospital(APIView):
+    print("HEHEHEHEHEHE")
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            data = request.data
+            data['user'] = request.user.id  # Attach the current user to the hospital data
+            serializer = HospitalSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    'status': 200,
+                    'message': 'Hospital registration successful',
+                    'data': serializer.data,
+                })
+            return Response({
+                'status': 400,
+                'message': 'Something went wrong',
+                'data': serializer.errors,
+            })
+        except Exception as e:
+            print(e)
+            return Response({
+                'status': 500,
+                'message': 'Internal server error',
+            })
