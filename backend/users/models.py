@@ -26,11 +26,20 @@ class User(AbstractUser):
         return self.email
     
     
+# class Hospital(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=255)
+#     phone_number = models.CharField(max_length=15)
+#     pdf = models.FileField(upload_to='hospital_pdfs/', null=True, blank=True)
+
+#     def __str__(self):
+#         return self.name
+    
 class Hospital(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=15)
-    pdf = models.FileField(upload_to='hospital_pdfs/', null=True, blank=True)
+    phone_number = models.CharField(max_length=20)
+    certificate = models.FileField(upload_to='certificates/', default='path/to/default/certificate.pdf')
 
     def __str__(self):
         return self.name
